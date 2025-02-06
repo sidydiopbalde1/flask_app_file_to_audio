@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertisseur PDF en Audio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Convertisseur PDF en Audio</h1>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".pdf" required>
+            <button type="submit">Convertir en audio</button>
+        </form>
+        {% if audio_file %}
+            <h2>Fichier audio généré :</h2>
+            <audio controls>
+                <source src="{{ audio_file }}" type="audio/mpeg">
+                Votre navigateur ne supporte pas l'audio.
+            </audio>
+            <a href="{{ audio_file }}" download class="btn">Télécharger le MP3</a>
+        {% endif %}
+        <div>
+            <p class="copyright">copyright FeelingTech @2025 🚀🔥😊</p>
+        </div>
+    </div>
+</body>
+</html>
