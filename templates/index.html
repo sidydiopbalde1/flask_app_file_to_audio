@@ -5,28 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convertisseur PDF en Audio</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Convertisseur PDF en Audio</h1>
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-        <form action="/" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept=".pdf" required>
-            <button type="submit">Convertir en audio</button>
-        </form>
-        {% if audio_file %}
-            <h2>Fichier audio généré :</h2>
-            <audio controls>
-                <source src="{{ audio_file }}" type="audio/mpeg">
-                Votre navigateur ne supporte pas l'audio.
-            </audio>
-            <a href="{{ audio_file }}" download class="btn">Télécharger le MP3</a>
-        {% endif %}
-        <div>
-            <p class="copyright">copyright FeelingTech @2025 🚀🔥😊</p>
-        </div>
+        <header>
+            <h1>
+                <i class="fas fa-file-audio"></i>
+                Convertisseur PDF en Audio
+            </h1>
+        </header>
+
+        <main>
+            {% if error %}
+                <div class="error-container">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p class="error">{{ error }}</p>
+                </div>
+            {% endif %}
+
+            <div class="upload-section">
+                <div class="loader-container" style="display: none;">
+                    <div class="loader">
+                        <div class="loader-circle"></div>
+                        <div class="loader-text">Conversion en cours...</div>
+                        <div class="loader-progress">
+                            <div class="loader-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="/" method="post" enctype="multipart/form-data" id="uploadForm">
+                    <div class="file-upload">
+                        <input type="file" name="file" id="file" accept=".pdf" required>
+                        <label for="file">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Choisir un fichier PDF</span>
+                        </label>
+                        <p class="file-name" id="fileName">Aucun fichier sélectionné</p>
+                    </div>
+                    <button type="submit">
+                        <i class="fas fa-sync-alt"></i>
+                        Convertir en audio
+                    </button>
+                </form>
+            </div>
+
+            {% if audio_file %}
+                <div class="audio-section">
+                    <h2>
+                        <i class="fas fa-headphones"></i>
+                        Fichier audio généré
+                    </h2>
+                    <div class="audio-player">
+                        <audio controls>
+                            <source src="{{ audio_file }}" type="audio/mpeg">
+                            Votre navigateur ne supporte pas l'audio.
+                        </audio>
+                    </div>
+                    <a href="{{ audio_file }}" download class="btn download-btn">
+                        <i class="fas fa-download"></i>
+                        Télécharger le MP3
+                    </a>
+                </div>
+            {% endif %}
+        </main>
+
+        <footer>
+            <div class="copyright">
+                <p>
+                    <i class="fas fa-code"></i>
+                    Développé par FeelingTech
+                </p>
+                <p>
+                    <i class="far fa-copyright"></i>
+                    2025 - Tous droits réservés 
+                    <span class="emoji">🚀🔥😊</span>
+                </p>
+            </div>
+        </footer>
     </div>
+
+    <script>
+        // Afficher le nom du fichier sélectionné
+        document.getElementById('file').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Aucun fichier sélectionné';
+            document.getElementById('fileName').textContent = fileName;
+        });
+
+        // Gestion du loader
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            // Afficher le loader
+            document.querySelector('.loader-container').style.display = 'flex';
+            
+            // Animation d'apparition du loader
+            document.querySelector('.loader-container').style.opacity = '0';
+            setTimeout(() => {
+                document.querySelector('.loader-container').style.opacity = '1';
+            }, 10);
+        });
+    </script>
 </body>
 </html>
